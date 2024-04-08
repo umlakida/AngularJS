@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My Family</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="angularjs-1.6.9-dist/css/w3.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script> 
+        <script src="myUsers.js"></script> 
+    </head>
+    <body ng-app="myApp" ng-controller="memberCtrl">
+
+        <div class="w3-container">
+
+            <h3>Family Members</h3>
+
+            <table class="w3-table w3-bordered w3-striped">
+                <tr>
+                    <th>Edit</th>
+                    <th ng-click="sortColumn('fName')">First Name</th>
+                    <th ng-click="sortColumn('lName')">Last Name</th>
+                    <th ng-click="sortColumn('Age')">Age</th>
+                    <th ng-click="sortColumn('gender')">Gender</th>
+                    <th ng-click="sortColumn('role')">Role</th>
+
+                </tr>
+                <tr ng-repeat="member in members | orderBy:sortBy:reverse">
+                    <td>
+                        <button class="w3-btn w3-ripple" ng-click="editMember(member.id)">&#9998; Edit</button>
+                    </td>
+                    <td>{{member.fName}}</td>
+                    <td>{{member.lName}}</td>
+                    <td>{{member.Age}}</td>
+                    <td>{{member.gender}}</td>
+                    <td>{{member.role}}</td>
+
+                </tr>
+            </table>
+            <br>
+            <button class="w3-btn w3-green w3-ripple" ng-click="editMember('new')">&#9998; Add New Member</button>
+
+            <form name="memberForm" ng-hide="hideform" novalidate>
+                <h3 ng-show="edit">Add New Member:</h3>
+                <h3 ng-hide="edit">Edit Member:</h3>
+                <label>First Name:</label>
+                <input class="w3-input w3-border" type="text" ng-model="fName" placeholder="First Name" ng-required="false" ng-class="{ 'ng-invalid': memberForm.fName.$invalid && memberForm.fName.$dirty }">
+                <br>
+                <label>Last Name:</label>
+                <input class="w3-input w3-border" type="text" ng-model="lName" placeholder="Last Name" ng-required="true" ng-class="{ 'ng-invalid': memberForm.lName.$invalid && memberForm.lName.$dirty }">
+                <br>
+                <label>Age:</label>
+                <input class="w3-input w3-border" type="text" ng-model="Age" placeholder="Age" ng-required="true" ng-class="{ 'ng-invalid': memberForm.Age.$invalid && memberForm.Age.$dirty }">
+                <br>
+                <label>Gender:</label>
+                <input class="w3-input w3-border" type="text" ng-model="gender" placeholder="Gender" ng-required="true" ng-class="{ 'ng-invalid': memberForm.gender.$invalid && memberForm.gender.$dirty }">
+                <br>
+                <label>Role:</label>
+                <input class="w3-input w3-border" type="text" ng-model="role" placeholder="Role" ng-required="true" ng-class="{ 'ng-invalid': memberForm.role.$invalid && memberForm.role.$dirty }">
+                <br>
+                <label>Password:</label>
+                <input class="w3-input w3-border" type="password" ng-model="passw1" placeholder="Password" ng-required="true" ng-class="{ 'ng-invalid': memberForm.passw1.$invalid && memberForm.passw1.$dirty }">
+                <br>
+                <label>Repeat:</label>
+                <input class="w3-input w3-border" type="password" ng-model="passw2" placeholder="Repeat Password" ng-required="true" ng-class="{ 'ng-invalid': memberForm.passw2.$invalid && memberForm.passw2.$dirty }">
+                <br>
+                <button class="w3-btn w3-green w3-ripple" ng-click="saveMember()" ng-disabled="error || incomplete">Save Changes</button>
+            </form>
+
+        </div>
+
+
+    </body>  
+</html>
