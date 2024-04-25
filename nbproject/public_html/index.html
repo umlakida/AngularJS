@@ -1,73 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html lang="">
     <head>
         <title>My Family</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="angularjs-1.6.9-dist/css/w3.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script> 
-        <script src="myUsers.js"></script> 
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <script src="myUsers.js"></script>
     </head>
+    <style>
+        table, th, td, tr{
+            border: 1px solid darkolivegreen;
+            border-collapse: separate;
+            padding: 5px;
+        }
+        table tr:nth-child(odd) td{
+            background-color: #e9edc9;
+        }
+        table tr:nth-child(even) td{
+            background-color: #e3e7a0;
+        }
+
+
+
+    </style>
     <body ng-app="myApp" ng-controller="memberCtrl">
 
         <div class="w3-container">
 
             <h3>Family Members</h3>
 
-            <table class="w3-table w3-bordered w3-striped">
+            <table class="w3-table w3-bordered w3-striped" ng-show="!hideTable">
+                <tr><button class="w3-btn w3-ripple" style="background-color: #4CAF50; color: white; margin-bottom: 20px;" ng-click="hideTable = !hideTable">Hide Table</button>
+                    <br>
+                </tr>
+
+                    <select class="w3-select" ng-model="selectedMember" style="width:250px; margin-bottom: 20px;background-color: #e3e7a0;">
+                        <option value="">-- Select Member --</option>
+                        <option ng-repeat="member in members" value="{{member.id}}">{{member.fName}} {{member.lName}}</option>
+                    </select>
+                </tr>
+
+<!--
+                <label>Select Family Member:</label>
+                <select class="w3-select" ng-model="selectedMember" ng-options="member.fName + ' ' + member.lName for member in members">
+                    <option value="">-- Select Member --</option>
+                </select>
+-->
                 <tr>
                     <th>Edit</th>
-                    <th ng-click="sortColumn('fName')">First Name</th>
-                    <th ng-click="sortColumn('lName')">Last Name</th>
-                    <th ng-click="sortColumn('Age')">Age</th>
-                    <th ng-click="sortColumn('gender')">Gender</th>
-                    <th ng-click="sortColumn('role')">Role</th>
+                    <th>Index</th>
+                    <th style="color: darkolivegreen" ng-click="sortColumn('fName')">First Name</th>
+                    <th style="color: darkolivegreen" ng-click="sortColumn('lName')">Last Name</th>
+                    <th style="color: darkolivegreen" ng-click="sortColumn('Age')">Age</th>
+                    <th style="color: darkolivegreen" ng-click="sortColumn('gender')">Gender</th>
+                    <th style="color: darkolivegreen" ng-click="sortColumn('role')">Role</th>
 
                 </tr>
-                <tr ng-repeat="member in members | orderBy:sortBy:reverse">
+                <tr ng-repeat="member in members | filter: {id: selectedMember}">
                     <td>
                         <button class="w3-btn w3-ripple" ng-click="editMember(member.id)">&#9998; Edit</button>
                     </td>
-                    <td>{{member.fName}}</td>
-                    <td>{{member.lName}}</td>
+                    <td>{{ $index + 1 }}</td>
+                    <td ng-dblclick="toggleColor(member)" ng-style="{ color: member.textColor }">{{member.fName}}</td>
+                    <td ng-dblclick="toggleColor(member)" ng-style="{ color: member.textColor }">{{member.lName}}</td>
                     <td>{{member.Age}}</td>
                     <td>{{member.gender}}</td>
                     <td>{{member.role}}</td>
-
                 </tr>
             </table>
             <br>
+
             <button class="w3-btn w3-green w3-ripple" ng-click="editMember('new')">&#9998; Add New Member</button>
 
             <form name="memberForm" ng-hide="hideform" novalidate>
                 <h3 ng-show="edit">Add New Member:</h3>
                 <h3 ng-hide="edit">Edit Member:</h3>
-                <label>First Name:</label>
-                <input class="w3-input w3-border" type="text" ng-model="fName" placeholder="First Name" ng-required="false" ng-class="{ 'ng-invalid': memberForm.fName.$invalid && memberForm.fName.$dirty }">
-                <br>
-                <label>Last Name:</label>
-                <input class="w3-input w3-border" type="text" ng-model="lName" placeholder="Last Name" ng-required="true" ng-class="{ 'ng-invalid': memberForm.lName.$invalid && memberForm.lName.$dirty }">
-                <br>
-                <label>Age:</label>
-                <input class="w3-input w3-border" type="text" ng-model="Age" placeholder="Age" ng-required="true" ng-class="{ 'ng-invalid': memberForm.Age.$invalid && memberForm.Age.$dirty }">
-                <br>
-                <label>Gender:</label>
-                <input class="w3-input w3-border" type="text" ng-model="gender" placeholder="Gender" ng-required="true" ng-class="{ 'ng-invalid': memberForm.gender.$invalid && memberForm.gender.$dirty }">
-                <br>
-                <label>Role:</label>
-                <input class="w3-input w3-border" type="text" ng-model="role" placeholder="Role" ng-required="true" ng-class="{ 'ng-invalid': memberForm.role.$invalid && memberForm.role.$dirty }">
-                <br>
-                <label>Password:</label>
-                <input class="w3-input w3-border" type="password" ng-model="passw1" placeholder="Password" ng-required="true" ng-class="{ 'ng-invalid': memberForm.passw1.$invalid && memberForm.passw1.$dirty }">
-                <br>
-                <label>Repeat:</label>
-                <input class="w3-input w3-border" type="password" ng-model="passw2" placeholder="Repeat Password" ng-required="true" ng-class="{ 'ng-invalid': memberForm.passw2.$invalid && memberForm.passw2.$dirty }">
-                <br>
+                <label>First Name:
+                    <input class="w3-input w3-border" type="text" ng-model="fName" placeholder="First Name" ng-required="true">
+                </label><br>
+                    <label>Last Name:
+                <input class="w3-input w3-border" type="text" ng-model="lName" placeholder="Last Name" ng-required="true">
+                </label><br>
+                <label>Age:
+                    <input class="w3-input w3-border" type="text" ng-model="Age" placeholder="Age" ng-required="true">
+                </label><br>
+                <label>Gender:
+                    <input class="w3-input w3-border" type="text" ng-model="gender" placeholder="Gender" valid-gender >
+                </label><br>
+                <label>Role:
+                <input class="w3-input w3-border" type="text" ng-model="role" placeholder="Role" ng-required="true" >
+                </label><br>
+                <label>Password:
+                <input class="w3-input w3-border" type="password" ng-model="passw1" placeholder="Password" ng-required="true" >
+                </label><br>
+                <label>Repeat:
+                <input class="w3-input w3-border" type="password" ng-model="passw2" placeholder="Repeat Password" ng-required="true" >
+                </label> <br>
                 <button class="w3-btn w3-green w3-ripple" ng-click="saveMember()" ng-disabled="error || incomplete">Save Changes</button>
             </form>
-
         </div>
-
-
-    </body>  
+    </body>
 </html>
