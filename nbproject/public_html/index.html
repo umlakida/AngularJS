@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="" xmlns="http://www.w3.org/1999/html">
     <head>
         <title>My Family</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="angularjs-1.6.9-dist/css/w3.css">
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.js"></script>
         <script src="myUsers.js"></script>
     </head>
     <style>
@@ -20,18 +21,79 @@
         table tr:nth-child(even) td{
             background-color: #e3e7a0;
         }
+        input.ng-invalid{
+             border : 1px solid red !important;
+         }
+        /* Анімація для кнопок */
+        .button-animation {
+            transition: background-color 0.3s ease;
+        }
+
+
+        /* Анімація slide для згортання */
+        .table-slide.ng-hide-remove {
+            -webkit-animation: slideIn 0.5s ease both;
+            animation: slideIn 0.5s ease both;
+        }
+
+        /* Анімація slide для розгортання */
+        .table-slide.ng-hide-add {
+            -webkit-animation: slideOut 0.5s ease both;
+            animation: slideOut 0.5s ease both;
+        }
+
+        /* Ключові кадри для анімації slideIn */
+        @-webkit-keyframes slideIn {
+            0% {
+                transform: translateY(-50%);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            0% {
+                transform: translateY(-50%);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        /* Ключові кадри для анімації slideOut */
+        @-webkit-keyframes slideOut {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-50%);
+            }
+        }
+
+        @keyframes slideOut {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-50%);
+            }
+        }
+
 
 
 
     </style>
     <body ng-app="myApp" ng-controller="memberCtrl">
+    <div ng-include="'Data.htm'"></div>
 
-        <div class="w3-container">
+    <div class="w3-container">
 
             <h3>Family Members</h3>
 
-            <table class="w3-table w3-bordered w3-striped" ng-show="!hideTable">
-                <tr><button class="w3-btn w3-ripple" style="background-color: #4CAF50; color: white; margin-bottom: 20px;" ng-click="hideTable = !hideTable">Hide Table</button>
+        <table class="w3-table w3-bordered w3-striped table-slide" ng-show="!hideTable">
+
+        <tr><button class="w3-btn w3-ripple button-animation" style="background-color: #4CAF50; color: white; margin-bottom: 20px;" ng-click="hideTable = !hideTable">Hide Table</button>
                     <br>
                 </tr>
 

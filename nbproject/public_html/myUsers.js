@@ -1,4 +1,4 @@
-angular.module('myApp', [])
+angular.module('myApp', ['ngAnimate'])
     .directive('validGender', function() {
         return {
             require: 'ngModel',
@@ -12,7 +12,6 @@ angular.module('myApp', [])
 
 
 .controller('memberCtrl', function ($scope) {
-
         $scope.passw1 = '';
         $scope.passw2 = '';
         $scope.members = [
@@ -100,4 +99,7 @@ angular.module('myApp', [])
             $scope.hideTable = !$scope.hideTable;
         };
 
-});
+})
+
+
+
